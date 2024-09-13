@@ -3,8 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const ses = new AWS.SES();
 
-// Teste de pipeline 1
-
 export const handler = async (values) => {
   // Dados a serem salvos no DynamoDB
   const params = {
