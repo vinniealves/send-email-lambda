@@ -40,7 +40,7 @@ export const handler = async (values) => {
 
     return {
       status: true,
-      message: "Dados enviado com sucesso!",
+      message: "Dados enviado com sucesso.",
     };
   } catch (error) {
     return {
