@@ -3,7 +3,7 @@ name: Deploy to AWS S3 and Lambda
 on:
   push:
     branches:
-      - main # Define a branch que dispara o workflow
+      - master # Define a branch que dispara o workflow
 
 jobs:
   build:
