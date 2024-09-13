@@ -1,0 +1,37 @@
+name: Deploy to AWS S3 and Lambda
+
+on:
+  push:
+    branches:
+      - main # Define a branch que dispara o workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout o repositório
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Instala dependências
+      - name: Install dependencies
+        run: npm install
+
+      # Step 3: Executa o comando de build/zip
+      - name: Run npm run zip
+        run: npm run zip
+
+      # Step 4: Faz o deploy no S3
+      - name: Deploy to S3
+        run: aws s3 cp ./dist/function.zip s3://send-email-test/function.zip --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 5: Atualiza a função Lambda
+      - name: Update AWS Lambda
+        run: aws lambda update-function-code --function-name sendEmail --s3-bucket send-email-test --s3-key function.zip --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
